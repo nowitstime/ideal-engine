@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DarkCull · Ideal Engine</title>
+<meta name="description" content="Swipe-to-rate photo culling on your phone or laptop. Ratings go straight into darktable .xmp sidecars.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+/* DarkCull: pure OLED black, blue for the interface, gold for stars, red for rejects. */
+:root{color-scheme:dark;--bg:#000;--blue:#3b82f6;--star:#facc15;--rej:#ef4444;--ok:#10b981;--txt:#f3f4f6;--mut:#9ca3af;--edge:#1f2937}
+body{background:var(--bg);color:var(--txt);font-family:"Inter",system-ui,sans-serif}
+.brand{font-weight:700;letter-spacing:-.01em}.brand i{color:var(--blue);font-style:normal}
+.sitenav nav{color:var(--mut)}
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:36px;align-items:center;padding-block:24px 56px}
+h1{font:700 clamp(36px,6vw,70px)/1 "Inter",sans-serif;letter-spacing:-.04em;margin:0 0 16px;max-width:13ch}
+.lede{color:var(--mut);max-width:46ch;font-size:17px;margin:0 0 22px}
+.where{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.where span{font-size:12px;border:1px solid var(--edge);border-radius:999px;padding:6px 12px;color:#d1d5db}
+.open{display:inline-flex;gap:8px;align-items:center;background:var(--blue);color:#fff;text-decoration:none;font-weight:600;padding:12px 20px;border-radius:8px}
+.open:hover{background:#2563eb}
+.dphone{width:min(100%,280px);justify-self:center;border:4px solid #1a1a1a;border-radius:30px;overflow:hidden;box-shadow:0 0 0 1px #2d3748,0 30px 80px -30px #3b82f6}
+h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin:0 0 8px}
+h3{font-size:clamp(24px,3.4vw,36px);letter-spacing:-.03em;margin:0 0 12px;line-height:1.1}
+.compass{display:grid;grid-template-columns:1fr auto 1fr;gap:14px 20px;align-items:center;justify-items:center;padding-block:14px 64px}
+.compass img{grid-column:2;grid-row:2;width:min(46vw,240px);border:4px solid #1a1a1a;border-radius:26px;overflow:hidden}
+.dir{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.dir b{font-size:20px;color:var(--star)}
+.dir small{color:var(--mut);font-size:12px}
+.dir .arr{font-size:22px;color:var(--blue)}
+.d-up{grid-column:2;grid-row:1}.d-down{grid-column:2;grid-row:3}.d-left{grid-column:1;grid-row:2;justify-self:end}.d-right{grid-column:3;grid-row:2;justify-self:start}
+.d-down b{color:var(--rej)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:36px;align-items:center;padding-block:10px 64px}
+.fast{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 28px}
+.fast b{display:block;font-size:15px;margin-bottom:2px}
+.fast span{font-size:14px;color:var(--mut)}
+.fast em{font-style:normal;font-family:"IBM Plex Mono",monospace;color:var(--ok)}
+.kb2{display:flex;flex-wrap:wrap;gap:10px 22px;padding-top:12px;color:var(--mut);font-size:13px}
+.kb2 span{display:flex;align-items:center;gap:6px}
+.kb2 kbd{font:500 12px "IBM Plex Mono",monospace;color:var(--txt);border:1px solid #374151;border-bottom-width:3px;border-radius:5px;padding:3px 7px;background:#0a0a0a}
+.desk img{border:1px solid var(--edge);border-radius:8px}
+.xmpbox{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:center;padding-block:36px 48px;border-top:1px solid var(--edge)}
+.xmpbox pre{margin:0;font:400 12.5px/1.6 "IBM Plex Mono",monospace;background:#0a0a0a;border:1px solid var(--edge);border-radius:6px;padding:16px;overflow-x:auto;color:#cbd5e1}
+.xmpbox pre em{color:var(--star);font-style:normal}.xmpbox pre u{color:var(--blue);text-decoration:none}
+.xmpbox p{color:var(--mut);margin:0}
+.foot{border-top:1px solid var(--edge);color:var(--mut)}
+@media (max-width:760px){.hero,.split,.xmpbox,.fast{grid-template-columns:1fr}.compass{gap:10px}}
+</style>
+</head>
+<body>
+<div class="in">
+  <header class="sitenav"><a class="brand" href="../index.html">← Dark<i>Cull</i></a><nav><a href="https://github.com/nowitstime/DarkCull">GitHub</a><a href="../index.html">All projects →</a></nav></header>
+  <main>
+    <section class="hero">
+      <div>
+        <h1>Cull a shoot before the coffee cools.</h1>
+        <p class="lede">One swipe per photo on your phone, one key per photo on your laptop. DarkCull keeps the next shots decoded and waiting, so there's no lag between a decision and the next frame. Ratings go straight into darktable sidecar files.</p>
+        <div class="where"><span>Phone, tablet or laptop</span><span>Works offline</span><span>Google Drive or SD card</span><span>No account, no server</span></div>
+        <a class="open" href="https://nowitstime.github.io/DarkCull/">Open DarkCull →</a>
+      </div>
+      <img class="dphone" src="../assets/img/darkcull-m2.webp" alt="Swiping up on a phone rates the photo five stars">
+    </section>
+
+    <h2>On your phone</h2>
+    <h3>Swipe to decide. Hold to undo.</h3>
+    <div class="compass">
+      <div class="dir d-up"><span class="arr">↑</span><b>★★★★★</b><small>keeper</small></div>
+      <div class="dir d-left"><span class="arr">←</span><b>★★★</b><small>maybe</small></div>
+      <img src="../assets/img/darkcull-m3.webp" alt="Mid-swipe: the photo tilts and shows a 3 stars badge">
+      <div class="dir d-right"><span class="arr">→</span><b>★★★★</b><small>good</small></div>
+      <div class="dir d-down"><span class="arr">↓</span><b>✕ Reject</b><small>long-press anywhere to undo</small></div>
+    </div>
+
+    <section class="split">
+      <div>
+        <h2>Why it's quick</h2>
+        <h3>Nothing to wait for.</h3>
+        <p style="color:var(--mut);margin:0">Every gesture can be remapped in Settings, and the hint bar along the bottom always shows what each direction does.</p>
+      </div>
+      <div class="fast">
+        <div><b>Next photo already decoded</b><span>Images are decoded ahead of time, so switching takes under <em>5 ms</em>.</span></div>
+        <div><b>Auto-advance</b><span>Rate it and the next frame is already there. No extra tap.</span></div>
+        <div><b>Scrub the counter</b><span>Drag the photo counter to fly through the roll with a live preview.</span></div>
+        <div><b>Focus check</b><span>Double-tap or pinch for 100% zoom right where you touched.</span></div>
+        <div><b>Cached for the field</b><span>Drive JPEGs are cached locally, so culling keeps working with no signal.</span></div>
+        <div><b>Burst badges</b><span>EXIF timestamps group bursts, so you can see 3/7 and pick the sharpest.</span></div>
+      </div>
+    </section>
+
+    <section class="split desk">
+      <img src="../assets/img/darkcull-d1.webp" alt="DarkCull on a laptop with rating counts in the filter bar">
+      <div>
+        <h2>On your laptop</h2>
+        <h3>Hands stay on the keys.</h3>
+        <div class="kb2"><span><kbd>A</kbd><kbd>D</kbd> previous / next</span><span><kbd>1</kbd>–<kbd>5</kbd> rate and advance</span><span><kbd>X</kbd> reject</span><span><kbd>Space</kbd> 1:1 loupe</span><span><kbd>Ctrl</kbd><kbd>Z</kbd> undo</span><span><kbd>F</kbd> fullscreen</span></div>
+      </div>
+    </section>
+
+    <section class="xmpbox">
+      <div><h2>Into darktable</h2><h3>Your RAW files are never touched.</h3><p>Each rating creates or patches a sidecar file next to the RAW. darktable reads it on import, with your stars and rejects already in place.</p></div>
+<pre>&lt;rdf:Description rdf:about=""
+  <u>xmp:Rating</u>="<em>5</em>"
+  <u>darktable:history_end</u>="0"/&gt;
+<span style="color:#6b7280">P1040231.RW2.xmp</span></pre>
+    </section>
+  </main>
+  <footer class="foot"><span>Vanilla JS · PWA · zero dependencies</span><a href="../octo/index.html">Back to OCTO →</a></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pockimusi · Ideal Engine</title>
+<meta name="description" content="A groovebox for a pocket console. Every instrument turns the same D-pad and four buttons into a new way to play.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=IBM+Plex+Mono:wght@400&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+/* Pockimusi: a star chart. Near-black sky, ivory and gold linework; each instrument glows in its own colour, as in the app.
+   Layout: title, then the controller explorer full width, featured instruments, the rest of the library, and the harmony chart lower down. */
+:root{color-scheme:dark;--ink:#06070f;--panel:#0b0e1c;--ivory:#efe6cf;--gold:#e8c66a;--dim:#9d93bf;--soft:#cfc7e6;--rule:#e8c66a40;--c:#6fc3ff}
+body{background:var(--ink) radial-gradient(70% 40% at 70% 0%,#1d1640 0%,transparent 70%);color:var(--ivory);font-family:"Inter",system-ui,sans-serif}
+.ch{font-family:"Chakra Petch",sans-serif;text-transform:uppercase;letter-spacing:.14em}
+.brand{color:var(--gold);font-size:13px}
+.sitenav nav{font-size:12px;color:var(--dim)}
+.eyebrow{font-size:12px;color:var(--gold);margin:0 0 12px}
+h2.sec{font:500 13px "Chakra Petch",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+h3.big{font:500 clamp(24px,3.4vw,34px)/1.15 "Chakra Petch",sans-serif;letter-spacing:.06em;margin:0 0 10px;text-wrap:balance}
+
+.top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 40px;align-items:end;padding-block:18px 26px}
+h1{font:500 clamp(40px,6vw,72px)/1 "Chakra Petch",sans-serif;letter-spacing:.16em;margin:0 0 8px}
+.say{font:400 13px "IBM Plex Mono",monospace;color:var(--dim);margin:0}
+.lede{font-size:17px;margin:0 0 14px;color:#ddd5f0;max-width:46ch}
+.spec{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12px;color:var(--dim)}
+.spec span::before{content:"✦ ";color:var(--gold)}
+
+/* Controller explorer, drawn like the app's instrument page */
+.pad{border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-radius:12px;background:linear-gradient(180deg,#0d1124,#080a16);box-shadow:0 0 80px -40px var(--c);transition:border-color .3s,box-shadow .3s;margin-bottom:14px}
+.pad .tabs{display:flex;gap:6px;padding:12px;border-bottom:1px solid #ffffff12;overflow-x:auto}
+.pad .tabs button{--k:#fff;flex:none;font:500 12px "Chakra Petch",sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:9px 12px;border-radius:6px;border:1px solid transparent;background:#ffffff08;color:color-mix(in srgb,var(--k) 75%,#fff);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.pad .tabs button::before{content:"";width:9px;height:9px;background:var(--k);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+.pad .tabs button[aria-pressed="true"]{background:color-mix(in srgb,var(--k) 18%,transparent);border-color:color-mix(in srgb,var(--k) 60%,transparent);color:#fff}
+.pad .tabs button:focus-visible{outline:2px solid var(--k);outline-offset:2px}
+.pad .stage{padding:10px 12px 4px;overflow-x:auto}
+.pad svg{display:block;width:100%;min-width:560px;height:auto}
+.pad .say2{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;padding:12px 16px 16px;border-top:1px solid #ffffff12}
+.pad .say2 b{font:500 15px "Chakra Petch",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
+.pad .say2 span{color:var(--soft);font-size:14px;flex:1 1 30ch;min-width:0}
+.hint{font-size:12px;color:var(--dim);margin:0 0 40px}
+
+/* Featured instruments as constellations */
+.consts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 32px;padding-block:28px 26px;border-top:1px solid var(--rule)}
+.const{display:grid;grid-template-columns:64px minmax(0,1fr);gap:2px 16px;align-items:start}
+.const svg{grid-row:span 2;width:64px;height:64px;color:var(--k)}
+.const h4{margin:0;font:700 18px "Chakra Petch",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--k)}
+.const p{margin:0 0 10px;color:var(--soft);font-size:14px}
+.const .scr{grid-column:1/-1;position:relative;padding:6px}
+.const .scr::before,.const .scr::after{content:"";position:absolute;width:14px;height:14px;border:1px solid var(--k)}
+.const .scr::before{left:0;top:0;border-right:0;border-bottom:0}.const .scr::after{right:0;bottom:0;border-left:0;border-top:0}
+
+/* The rest of the library */
+.more{padding-block:30px 34px;border-top:1px solid var(--rule)}
+.more .head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 32px;align-items:end;margin-bottom:18px}
+.more .head p{margin:0;color:var(--soft);max-width:52ch}
+.lib{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.lib figure{margin:0;display:flex;flex-direction:column;gap:8px}
+.lib img{border:1px solid color-mix(in srgb,var(--k) 40%,transparent);border-radius:4px}
+.lib figcaption{display:flex;flex-direction:column}
+.lib figcaption b{font:500 14px "Chakra Petch",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--k)}
+.lib figcaption span{font-size:13px;color:var(--soft)}
+.also{margin:18px 0 0;font-size:14px;color:var(--soft)}
+.also b{color:var(--ivory);font-weight:500}
+
+/* Harmony chart, lower down */
+.orbit{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:32px;align-items:center;padding-block:34px;border-top:1px solid var(--rule)}
+.astro{width:100%;max-width:400px;aspect-ratio:1;justify-self:center}
+.astro svg{width:100%;height:100%;overflow:visible}
+.astro .ring{transform-origin:250px 250px;animation:spin 160s linear infinite}
+.astro .ring2{transform-origin:250px 250px;animation:spin 240s linear infinite reverse}
+.rules{display:grid;gap:16px;margin-top:16px}
+.rules div{display:grid;grid-template-columns:16px minmax(0,1fr);gap:4px 12px}
+.rules i{grid-row:span 2;color:var(--gold);font-style:normal;line-height:1.4}
+.rules b{font-weight:600}
+.rules span{color:var(--soft);font-size:14px}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-block:24px;border-top:1px solid var(--rule)}
+.legend div{display:flex;flex-direction:column;gap:4px}
+.legend kbd{font:700 13px "Chakra Petch",sans-serif;color:var(--gold);letter-spacing:.1em}
+.legend span{font-size:13px;color:var(--soft);text-transform:none;letter-spacing:0;font-family:"Inter",sans-serif}
+.get{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);color:var(--gold);padding:12px 20px;border-radius:6px;text-decoration:none;font:500 13px "Chakra Petch",sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.get:hover{background:#e8c66a1a}
+.foot{border-top:1px solid var(--rule);color:var(--dim)}
+@media (max-width:760px){.top,.consts,.orbit{grid-template-columns:1fr}.lib{grid-template-columns:repeat(2,minmax(0,1fr))}.legend{grid-template-columns:repeat(2,minmax(0,1fr))}.astro{max-width:300px}}
+</style>
+</head>
+<body>
+<canvas class="sky" data-n="420"></canvas>
+<div class="in">
+  <header class="sitenav"><a class="brand ch" href="../index.html">← Pockimusi</a><nav class="ch"><a href="https://github.com/nowitstime/pockimusi">GitHub</a><a href="../ricochet-press/index.html">Next ✦</a></nav></header>
+  <main>
+    <section class="top">
+      <div>
+        <p class="eyebrow ch">✦ A groovebox you explore with your thumbs</p>
+        <h1>POCKIMUSI</h1>
+        <p class="say">POCK-ee-MOO-see · pocket + music</p>
+      </div>
+      <div>
+        <p class="lede">Every instrument turns the same D-pad and four buttons into a new way to play. You learn one by pressing buttons, not by reading menus.</p>
+        <div class="spec ch"><span>RG35XX Plus</span><span>640×480</span><span>LÖVE 11.5</span><span>No touchscreen</span></div>
+      </div>
+    </section>
+
+    <section class="pad" id="pad" aria-label="Controller explorer">
+      <div class="tabs" id="tabs" role="group" aria-label="Choose an instrument"></div>
+      <div class="stage"><svg id="ctl" viewBox="0 0 720 362" role="img" aria-labelledby="ctlTitle"><title id="ctlTitle">What each button does on the chosen instrument</title></svg></div>
+      <div class="say2"><b id="ctlName">Chord harp</b><span id="ctlDesc"></span></div>
+    </section>
+    <p class="hint">Pick an instrument above to see what the D-pad, face buttons and shoulders do on it.</p>
+
+    <h2 class="sec">✦ Featured instruments</h2>
+    <div class="consts">
+      <div class="const" style="--k:#6fc3ff">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" aria-hidden="true"><path d="M10 60 L28 22 L46 50 L70 14" stroke-opacity=".6"/><g fill="currentColor"><circle cx="10" cy="60" r="3"/><circle cx="28" cy="22" r="4"/><circle cx="46" cy="50" r="3"/><circle cx="70" cy="14" r="4"/></g></svg>
+        <h4>Chord harp</h4><p>Choose a chord with the D-pad and strum it on the face buttons.</p>
+        <div class="scr"><img src="../assets/img/pocki-harp-play.webp" alt="Chord harp: D-pad harmony compass and four chord triggers"></div>
+      </div>
+      <div class="const" style="--k:#ff5a5f">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" aria-hidden="true"><path d="M14 40 L40 14 L66 40 L40 66Z" stroke-opacity=".6"/><g fill="currentColor"><circle cx="14" cy="40" r="4"/><circle cx="40" cy="14" r="3"/><circle cx="66" cy="40" r="4"/><circle cx="40" cy="66" r="3"/><circle cx="40" cy="40" r="2"/></g></svg>
+        <h4>Drums</h4><p>Four drums on four buttons. Hold a direction for accents, flams, ratchets or ghost notes.</p>
+        <div class="scr"><img src="../assets/img/pocki-drums-pattern.webp" alt="Drums: expression compass and kick, snare, hat and clap triggers"></div>
+      </div>
+      <div class="const" style="--k:#a487ff">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 50 Q 24 20 40 44 T 72 30" stroke-opacity=".6"/><g fill="currentColor"><circle cx="8" cy="50" r="3"/><circle cx="40" cy="44" r="4"/><circle cx="72" cy="30" r="3"/><circle cx="24" cy="32" r="2"/></g></svg>
+        <h4>Bass</h4><p>Each direction is a scale degree. The face buttons choose how the note is played.</p>
+        <div class="scr"><img src="../assets/img/pocki-bass-glide.webp" alt="Bass: scale degree compass with accent, staccato, legato and hold"></div>
+      </div>
+      <div class="const" style="--k:#3fe0c0">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 64 L12 16 M12 40 L40 40 L68 16 M40 40 L68 64" stroke-opacity=".6"/><g fill="currentColor"><circle cx="12" cy="16" r="3"/><circle cx="12" cy="64" r="3"/><circle cx="40" cy="40" r="4"/><circle cx="68" cy="16" r="3"/><circle cx="68" cy="64" r="3"/></g></svg>
+        <h4>Strum</h4><p>Pick the chord tones with your thumbs, then pluck up or down with the shoulders.</p>
+        <div class="scr"><img src="../assets/img/pocki-strum-play.webp" alt="Strum: chord tone triggers with upstroke and downstroke on the shoulders"></div>
+      </div>
+    </div>
+
+    <section class="more">
+      <div class="head">
+        <div><h2 class="sec">✦ And many more</h2><h3 class="big">More than a dozen ways to play.</h3></div>
+        <p>Any instrument can go in any of the four track slots. Swap one in and the same buttons do something new.</p>
+      </div>
+      <div class="lib">
+        <figure style="--k:#c58cff"><img src="../assets/img/pocki-dial-play.webp" alt="Dial instrument"><figcaption><b>Dial</b><span>Roll your thumb round the scale.</span></figcaption></figure>
+        <figure style="--k:#7aa8ff"><img src="../assets/img/pocki-slide-play.webp" alt="Slide instrument"><figcaption><b>Slide</b><span>Steer the pitch instead of choosing it.</span></figcaption></figure>
+        <figure style="--k:#f1d38a"><img src="../assets/img/pocki-valves-play.webp" alt="Valves instrument"><figcaption><b>Valves</b><span>Fingerings and breath, like brass.</span></figcaption></figure>
+        <figure style="--k:#a487ff"><img src="../assets/img/pocki-roller.webp" alt="Roller instrument"><figcaption><b>Roller</b><span>Rolls and repeats at the speed you pick.</span></figcaption></figure>
+        <figure style="--k:#c58cff"><img src="../assets/img/pocki-wobble.webp" alt="Wobble instrument"><figcaption><b>Wobble</b><span>Bass that wobbles in time with the loop.</span></figcaption></figure>
+        <figure style="--k:#f5b23d"><img src="../assets/img/pocki-breaks.webp" alt="Breaks instrument"><figcaption><b>Breaks</b><span>Jump between slices of a drum break.</span></figcaption></figure>
+      </div>
+      <p class="also">Also in the library: <b>Pad</b>, <b>Lead</b> and <b>Hand Drums</b>, plus a chord lane that sits above all four tracks.</p>
+    </section>
+
+    <section class="orbit">
+      <div class="astro" aria-hidden="true">
+        <svg viewBox="0 0 500 500">
+          <defs><path id="spk" d="M0-9 L2-2 L9 0 L2 2 L0 9 L-2 2 L-9 0 L-2-2Z"/></defs>
+          <g class="ring2" fill="none" stroke="#e8c66a" stroke-opacity=".35"><circle cx="250" cy="250" r="236"/><circle cx="250" cy="250" r="228" stroke-dasharray="2 6"/></g>
+          <g class="ring">
+            <polygon points="250,40 398,102 460,250 398,398 250,460 102,398 40,250 102,102" fill="none" stroke="#9d93bf" stroke-opacity=".6"/>
+            <g fill="#efe6cf"><use href="#spk" x="250" y="40"/><use href="#spk" x="398" y="102"/><use href="#spk" x="460" y="250"/><use href="#spk" x="398" y="398"/><use href="#spk" x="250" y="460"/><use href="#spk" x="102" y="398"/><use href="#spk" x="40" y="250"/><use href="#spk" x="102" y="102"/></g>
+            <g font-family="Chakra Petch, sans-serif" font-size="22" fill="#efe6cf" text-anchor="middle" dominant-baseline="middle"><text x="250" y="92">bVI</text><text x="356" y="144">iii</text><text x="408" y="250">V</text><text x="356" y="356">IVm</text><text x="250" y="408">vi</text><text x="144" y="356">bVII</text><text x="92" y="250">IV</text><text x="144" y="144">ii</text></g>
+          </g>
+          <circle cx="250" cy="250" r="150" fill="none" stroke="#e8c66a" stroke-opacity=".7"/>
+          <path d="M250 110 L268 232 L390 250 L268 268 L250 390 L232 268 L110 250 L232 232Z" fill="#e8c66a" fill-opacity=".12" stroke="#e8c66a"/>
+          <path d="M250 170 L262 238 L330 250 L262 262 L250 330 L238 262 L170 250 L238 238Z" transform="rotate(45 250 250)" fill="none" stroke="#efe6cf" stroke-opacity=".6"/>
+          <circle cx="250" cy="250" r="22" fill="#06070f" stroke="#e8c66a"/>
+          <text x="250" y="252" font-family="Chakra Petch, sans-serif" font-size="22" fill="#efe6cf" text-anchor="middle" dominant-baseline="middle">C</text>
+        </svg>
+      </div>
+      <div>
+        <h2 class="sec">✦ Stays in orbit</h2>
+        <h3 class="big">Hard to play a wrong note.</h3>
+        <div class="rules">
+          <div><i>✦</i><b>Notes follow the key</b><span>Pitched instruments play scale degrees and can follow the chord lane, so every note lands in key.</span></div>
+          <div><i>✦</i><b>Same grammar on every track</b><span>A button's job is the same on every instrument. Learn it once.</span></div>
+          <div><i>✦</i><b>Playable without looking</b><span>The screen confirms what you did. You never need it to do it.</span></div>
+          <div><i>✦</i><b>The loop is always rolling</b><span>Recording is a gesture, not a menu. Press R2 and play.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="legend ch">
+      <div><kbd>D-pad</kbd><span>Degree, harmony or expression</span></div>
+      <div><kbd>A B X Y</kbd><span>Triggers: the instrument's four voices</span></div>
+      <div><kbd>L1 · R1</kbd><span>Octave, stroke or breath</span></div>
+      <div><kbd>R2</kbd><span>Record into the rolling loop</span></div>
+    </div>
+    <p><a class="get" href="https://github.com/nowitstime/pockimusi">✦ Get it on GitHub</a></p>
+  </main>
+  <footer class="foot ch" style="font-size:12px"><span>LÖVE 11.5 · PortMaster · all sounds made in code</span><a href="../ricochet-press/index.html">Ricochet Press ✦</a></footer>
+</div>
+<script src="../assets/sky.js"></script>
+<script>
+// Controller explorer. Labels come from each instrument's own page in the app.
+// D-pad labels run clockwise from up: up, up-right, right, down-right, down, down-left, left, up-left.
+const DEG = ['5', '6', '7', '8', 'L5', '2', '3', '4'];
+const INSTRUMENTS = [
+  { id: 'harp', name: 'Chord harp', c: '#6fc3ff', l1: 'OCT −', r1: 'OCT +', dpad: ['bVI', 'iii', 'V', 'IVm', 'vi', 'bVII', 'IV', 'ii'], dcap: 'HARMONY',
+    big: 'C', sub: 'I · OCT 0 · TRIAD', face: { n: 'C', w: 'G', e: 'E', s: 'C' }, desc: 'Choose a chord with the D-pad, then strum it on the face buttons.' },
+  { id: 'drums', name: 'Drums', c: '#ff5a5f', l1: '1/4', r1: '1/8', dpad: ['ACCENT', 0, 'RATCHET', 0, 'GHOST', 0, 'FLAM', 0], dcap: 'EXPRESSION',
+    big: 'KIT', sub: 'HOLD A DIRECTION · HIT A DRUM', face: { n: 'CLAP', w: 'SNARE', e: 'HAT', s: 'KICK' }, on: 's', desc: 'Four drums on the four face buttons. Hold a direction for accents, flams, ratchets or ghost notes.' },
+  { id: 'bass', name: 'Bass', c: '#a487ff', l1: 'OCT −1', r1: 'OCT +1', dpad: DEG, dcap: 'SCALE DEGREE',
+    big: 'B', sub: 'DEG 7 · OCT +1 · HOLD', face: { n: 'ACCENT', w: 'STAC', e: 'LEGATO', s: 'HOLD' }, on: 's', desc: 'Each direction is a scale degree. The face buttons choose how the note is played.' },
+  { id: 'strum', name: 'Strum', c: '#3fe0c0', l1: 'UPSTROKE', r1: 'DOWNSTROKE', dpad: DEG, dcap: 'SCALE DEGREE',
+    big: 'G', sub: 'DEG 5 · DOWNSTROKE', face: { n: '8VE', w: '7TH', e: '5TH', s: '3RD' }, on: 'e', desc: 'Pick the chord tones with your thumbs, then pluck up or down with the shoulders.' },
+  { id: 'dial', name: 'Dial', c: '#c58cff', l1: 'OCT −1', r1: 'OCT +1', dpad: ['ACCENT', 0, 'SHARP', 0, 'SOFT', 0, 'FLAT', 0], dcap: 'SCALE DEGREE',
+    big: 'E', sub: 'DEG 3 · OCT 0 · PLAIN', face: { n: '5', w: '7', e: '3', s: '1' }, on: 'e', desc: 'Roll your thumb round the scale, like turning a dial.' },
+  { id: 'slide', name: 'Slide', c: '#7aa8ff', l1: 'OCT − / FAST', r1: 'OCT + / FAST', dpad: ['RISE', 0, 'STEP +', 0, 'FALL', 0, 'STEP −', 0], dcap: 'SCALE DEGREE',
+    big: 'E+', sub: 'DEG 3+ · SNAP SOFT', face: { n: 'ACCENT', w: 'DIVE', e: 'SETTLE', s: 'NOTE' }, on: 's', desc: 'Steer the pitch instead of choosing it. The D-pad sets how it rises and falls.' },
+  { id: 'valves', name: 'Valves', c: '#f1d38a', l1: 'TONGUE', r1: 'BLOW', dpad: ['5TH', 0, '7TH', 0, 'OCT', 0, '3RD', 0], dcap: 'SCALE DEGREE',
+    big: 'F', sub: '5TH · −1 SCALE · BLOW', face: { n: '−3', w: '−5', e: '−1', s: '−2' }, on: 'e', desc: 'Press fingerings like a brass player and blow with the shoulder buttons.' },
+  { id: 'breaks', name: 'Breaks', c: '#f5b23d', l1: 'HALF', r1: 'DOUBLE', dpad: ['1', '2', '3', '4', '5', '6', '7', '8'], dcap: 'JUMP TO A SLICE',
+    big: 'AMEN', sub: 'FUNK BREAKS · 2 BARS', face: { n: 'CHOKE', w: 'REV', e: 'STUT', s: 'PLAY' }, on: 's', desc: 'Jump between slices of a drum break and chop it up with the face buttons.' },
+];
+
+const NS = 'http://www.w3.org/2000/svg';
+const svg = document.getElementById('ctl');
+const pad = document.getElementById('pad');
+const el = (tag, attrs, text) => {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  return e;
+};
+const pt = (cx, cy, r, deg) => [cx + r * Math.sin(deg * Math.PI / 180), cy - r * Math.cos(deg * Math.PI / 180)];
+const sparkle = (x, y, s, fill) => el('path', { d: `M${x} ${y - s}L${x + s * .22} ${y - s * .22}L${x + s} ${y}L${x + s * .22} ${y + s * .22}L${x} ${y + s}L${x - s * .22} ${y + s * .22}L${x - s} ${y}L${x - s * .22} ${y - s * .22}Z`, fill });
+const FONT = 'Chakra Petch, sans-serif';
+
+function octagon(g, cx, cy, r, c) {
+  const pts = [];
+  for (let i = 0; i < 8; i++) pts.push(pt(cx, cy, r, i * 45 + 22.5));
+  g.appendChild(el('polygon', { points: pts.map((p) => p.join(',')).join(' '), fill: 'none', stroke: c, 'stroke-opacity': .45 }));
+  pts.forEach(([x, y], i) => g.appendChild(sparkle(x, y, i % 2 ? 6 : 9, c)));
+}
+
+function pill(g, x, label, key, c, right) {
+  g.appendChild(el('rect', { x, y: 8, width: 200, height: 34, rx: 17, fill: '#05060d', stroke: c, 'stroke-opacity': .5 }));
+  const kx = right ? x + 176 : x + 24;
+  g.appendChild(el('rect', { x: kx - 17, y: 15, width: 34, height: 20, rx: 10, fill: c, 'fill-opacity': .25 }));
+  g.appendChild(el('text', { x: kx, y: 26, fill: c, 'font-family': FONT, 'font-size': 12, 'text-anchor': 'middle', 'dominant-baseline': 'middle' }, key));
+  g.appendChild(el('text', { x: right ? x + 152 : x + 48, y: 26, fill: '#efe6cf', 'font-family': FONT, 'font-size': 14, 'letter-spacing': 1, 'text-anchor': right ? 'end' : 'start', 'dominant-baseline': 'middle' }, label));
+}
+
+function draw(ins) {
+  const c = ins.c;
+  pad.style.setProperty('--c', c);
+  svg.querySelectorAll('g').forEach((g) => g.remove());
+  const g = el('g', {});
+  svg.appendChild(g);
+  pill(g, 18, ins.l1, 'L1', c, false);
+  pill(g, 502, ins.r1, 'R1', c, true);
+
+  // D-pad compass
+  const [cx, cy] = [150, 192];
+  octagon(g, cx, cy, 136, c);
+  g.appendChild(el('circle', { cx, cy, r: 82, fill: 'none', stroke: c, 'stroke-opacity': .55 }));
+  const star = [];
+  for (let i = 0; i < 16; i++) star.push(pt(cx, cy, i % 2 ? 12 : (i % 4 === 0 ? 70 : 44), i * 22.5));
+  g.appendChild(el('polygon', { points: star.map((p) => p.join(',')).join(' '), fill: c, 'fill-opacity': .16, stroke: c, 'stroke-width': 1.4 }));
+  g.appendChild(sparkle(cx, cy, 11, c));
+  ins.dpad.forEach((lab, i) => {
+    if (!lab) return;
+    const [dx, dy] = pt(cx, cy, i % 2 ? 44 : 70, i * 45);
+    g.appendChild(el('rect', { x: dx - 4.5, y: dy - 4.5, width: 9, height: 9, fill: c, transform: `rotate(45 ${dx} ${dy})` }));
+    const [lx, ly] = pt(cx, cy, 102, i * 45);
+    g.appendChild(el('text', { x: lx, y: ly, fill: '#efe6cf', 'font-family': FONT, 'font-size': lab.length > 4 ? 11 : 17, 'letter-spacing': lab.length > 4 ? .5 : 0, 'text-anchor': 'middle', 'dominant-baseline': 'middle' }, lab));
+  });
+  g.appendChild(el('text', { x: cx, y: 354, fill: '#9d93bf', 'font-family': FONT, 'font-size': 13, 'letter-spacing': 2, 'text-anchor': 'middle' }, 'D-PAD: ' + ins.dcap));
+
+  // Centre readout
+  g.appendChild(el('text', { x: 360, y: 92, fill: '#efe6cf', 'font-family': FONT, 'font-size': 14, 'letter-spacing': 2, 'text-anchor': 'middle' }, ins.name.toUpperCase()));
+  g.appendChild(el('line', { x1: 300, x2: 420, y1: 106, y2: 106, stroke: c, 'stroke-opacity': .3 }));
+  g.appendChild(el('text', { x: 360, y: 196, fill: '#efe6cf', 'font-family': FONT, 'font-size': ins.big.length > 2 ? 40 : 64, 'text-anchor': 'middle', 'dominant-baseline': 'middle' }, ins.big));
+  ins.sub.split(' · ').forEach((part, k) => g.appendChild(el('text', { x: 360, y: 246 + k * 18, fill: c, 'font-family': FONT, 'font-size': 12, 'letter-spacing': 1.5, 'text-anchor': 'middle' }, part)));
+  g.appendChild(sparkle(332, 318, 12, c)).setAttribute('fill-opacity', .2);
+  g.appendChild(sparkle(398, 140, 18, c)).setAttribute('fill-opacity', .15);
+
+  // Face buttons
+  const [fx, fy] = [570, 192];
+  octagon(g, fx, fy, 136, c);
+  const at = { n: [fx, fy - 70], s: [fx, fy + 70], w: [fx - 70, fy], e: [fx + 70, fy] };
+  for (const k of ['n', 'w', 'e', 's']) {
+    const [x, y] = at[k];
+    const lab = ins.face[k];
+    const on = ins.on === k;
+    g.appendChild(el('circle', { cx: x, cy: y, r: 40, fill: 'none', stroke: c, 'stroke-opacity': .35 }));
+    g.appendChild(el('circle', { cx: x, cy: y, r: 34, fill: on ? c : '#05060d', stroke: c, 'stroke-width': 2.5 }));
+    g.appendChild(el('text', { x, y: y + 1, fill: on ? '#05060d' : '#efe6cf', 'font-family': FONT, 'font-size': lab.length > 3 ? 12 : 20, 'letter-spacing': lab.length > 3 ? 1 : 0, 'text-anchor': 'middle', 'dominant-baseline': 'middle' }, lab));
+  }
+  g.appendChild(sparkle(fx, fy, 12, c));
+  g.appendChild(el('text', { x: fx, y: 354, fill: '#9d93bf', 'font-family': FONT, 'font-size': 13, 'letter-spacing': 2, 'text-anchor': 'middle' }, 'FACE: TRIGGERS'));
+
+  document.getElementById('ctlName').textContent = ins.name;
+  document.getElementById('ctlDesc').textContent = ins.desc;
+}
+
+const tabs = document.getElementById('tabs');
+INSTRUMENTS.forEach((ins, i) => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.textContent = ins.name;
+  b.style.setProperty('--k', ins.c);
+  b.setAttribute('aria-pressed', i === 0);
+  b.addEventListener('click', () => {
+    tabs.querySelectorAll('button').forEach((t) => t.setAttribute('aria-pressed', t === b));
+    draw(ins);
+  });
+  tabs.appendChild(b);
+});
+draw(INSTRUMENTS[0]);
+</script>
+</body>
+</html>

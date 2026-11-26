@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ideal Engine</title>
+<meta name="description" content="Music tools for phones and handhelds, a roguelike, a typing trainer and a photo culler.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Mono:wght@400&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+/* Home: a calm neutral page; each tile already wears its project's palette and type. */
+:root{color-scheme:light;--bg:#f3f2ef;--ink:#1b1b1d;--muted:#5c5a55;--faint:#77746e}
+body{background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif}
+.brand{font:700 15px "Space Grotesk",sans-serif;letter-spacing:-.01em;text-decoration:none}
+.brand small{font:400 12px "IBM Plex Mono",monospace;color:var(--faint);margin-left:8px}
+h1{font:700 clamp(32px,5vw,56px)/1.02 "Space Grotesk",sans-serif;letter-spacing:-.03em;margin:28px 0 10px;max-width:16ch;text-wrap:balance}
+.lede{color:var(--muted);max-width:56ch;margin:0 0 32px;font-size:16px}
+.tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;padding-bottom:24px}
+.tile{grid-column:span 2;display:flex;flex-direction:column;text-decoration:none;min-height:400px;overflow:hidden;position:relative;transition:transform .2s}
+.tile.big{grid-column:span 3;min-height:460px}
+.tile:hover{transform:translateY(-3px)}
+.tile:focus-visible{outline:3px solid #3a5bd9;outline-offset:3px}
+.tile .shot{flex:1;overflow:hidden;position:relative;min-height:220px}
+.tile .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.tile .shot img.ph{inset:auto;left:50%;top:20px;transform:translateX(-50%);height:auto;max-width:none;object-fit:fill}
+.tile .cap{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}
+.tile .t{font-size:20px;font-weight:700}
+.tile .d{font-size:13px;opacity:.8}
+.tile .tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.t-octo{background:#F5F3EE;color:#1D1C1A}
+.t-octo .shot{background:#ECE9E2}
+.t-octo .shot img.ph{width:44%;box-shadow:0 0 0 1px #d8d4cb}
+.t-octo .t{letter-spacing:-.02em}
+.t-octo .sq{display:flex;align-items:center;margin-bottom:6px}
+.t-octo .sq i{width:14px;height:14px}.t-octo .sq b{width:10px;height:2px;background:#1D1C1A}
+.t-pocki{background:#06070f;color:#efe6cf;font-family:"Chakra Petch",sans-serif;text-transform:uppercase;border:1px solid #2a2540}
+.t-pocki .shot{background:radial-gradient(80% 70% at 50% 40%,#231a4a,#06070f 70%)}
+.t-pocki .shot img{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);width:80%;height:auto;border:1px solid #e8c66a66;box-shadow:0 0 40px -10px #8a7bff;z-index:1}
+.t-pocki .t{color:#e8c66a;letter-spacing:.12em}
+.t-pocki .d{text-transform:none;font-family:"Inter",sans-serif;color:#c9c1e6}
+.t-rico{background:#f4efe4;color:#00a95c;font-family:"Space Mono",monospace;border:2px solid #00a95c;box-shadow:5px 5px 0 #ff48b0}
+.t-rico .shot{background:radial-gradient(circle,#ff48b055 2px,transparent 2.5px) 0 0/10px 10px}
+.t-rico .shot img.ph{width:44%;border:2px solid #00a95c}
+.t-rico .t{text-shadow:2px 2px 0 #ff48b0aa;text-transform:uppercase}
+.t-type{background:#000;color:#f1f5f9;font-family:"JetBrains Mono",monospace;border:1px solid #1a2332}
+.t-type .t{color:#38bdf8}
+.t-type .t::after{content:"";display:inline-block;width:2px;height:1em;background:#38bdf8;margin-left:4px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.t-dark{background:#000;color:#f3f4f6;border:1px solid #1f2937}
+.t-dark .shot img.ph{width:42%;border-radius:14px;border:3px solid #1f2937}
+.t-dark .stars{color:#facc15;font-size:13px;letter-spacing:2px}
+.t-dark .t{font-weight:600}
+.foot{color:var(--muted);border-top:1px solid #dcd9d3;margin-top:24px}
+@media (max-width:900px){.tile,.tile.big{grid-column:span 3}.tiles .tile:last-child{grid-column:1/-1}}
+@media (max-width:600px){.tile,.tile.big,.tiles .tile:last-child{grid-column:1/-1}.tile,.tile.big{min-height:380px}}
+</style>
+</head>
+<body>
+<div class="in">
+  <header class="sitenav"><a class="brand" href="index.html">ideal-engine<small>/ projects</small></a><nav><a href="https://github.com/nowitstime">GitHub</a></nav></header>
+  <main>
+    <h1>Things I've been building lately.</h1>
+    <p class="lede">Music tools for phones and handhelds, a roguelike, a typing trainer and a photo culler. Every one runs in the browser or on a pocket console.</p>
+    <div class="tiles">
+      <a class="tile big t-octo" href="octo/index.html"><div class="shot"><img class="ph" src="assets/img/octo-1.webp" alt="OCTO loop map with four instruments on strings"></div><div class="cap"><div class="sq" aria-hidden="true"><i style="background:#F2B8A0"></i><b></b><i style="background:#A9C4EE"></i><b></b><i style="background:#C9B8E8"></i><b></b><i style="background:#A8D8C8"></i></div><span class="t">OCTO</span><span class="d">Touch-first loop maker for the phone</span></div></a>
+      <a class="tile big t-pocki" href="pockimusi/index.html"><div class="shot"><canvas class="sky" data-n="160"></canvas><img src="assets/img/pocki-harp-play.webp" alt="Pockimusi chord harp screen"></div><div class="cap"><span class="tag">✦ RG35XX Plus · LÖVE</span><span class="t">Pockimusi</span><span class="d">A pocket groovebox you explore with a D-pad and four buttons</span></div></a>
+      <a class="tile t-rico" href="ricochet-press/index.html"><div class="shot"><img class="ph" src="assets/img/ricochet-3.webp" alt="Ricochet Press aiming a shot"></div><div class="cap"><span class="t">Ricochet Press</span><span class="d">Brick breaker roguelike, printed in two inks</span></div></a>
+      <a class="tile t-type" href="typeflow/index.html"><div class="shot"><img src="assets/img/typeflow-flow.webp" alt="TypeFlow glowing deep in flow"></div><div class="cap"><span class="t">typeflow</span><span class="d">Typing trainer that grows from one word to 1,000</span></div></a>
+      <a class="tile t-dark" href="darkcull/index.html"><div class="shot"><img class="ph" src="assets/img/darkcull-m2.webp" alt="DarkCull rating a photo five stars with a swipe"></div><div class="cap"><span class="stars" aria-hidden="true">★★★★★</span><span class="t">DarkCull</span><span class="d">Swipe-to-rate photo culling for darktable</span></div></a>
+    </div>
+  </main>
+  <footer class="foot"><span>More projects on the way.</span><a href="https://github.com/nowitstime">github.com/nowitstime</a></footer>
+</div>
+<script src="assets/sky.js"></script>
+</body>
+</html>
