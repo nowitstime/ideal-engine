@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pockimusi · Ideal Engine</title>
 <meta name="description" content="A groovebox for a pocket console. Every instrument turns the same D-pad and four buttons into a new way to play.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pockimusi · Pocket Groovebox">
+<meta property="og:description" content="A groovebox for a pocket console. Every instrument turns the same D-pad and four buttons into a new way to play.">
+<meta property="og:image" content="https://nowitstime.github.io/ideal-engine/assets/img/pocki-harp-play.webp">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,7 +95,7 @@ h1{font:500 clamp(40px,6vw,72px)/1 "Chakra Petch",sans-serif;letter-spacing:.16e
 <body>
 <canvas class="sky" data-n="420"></canvas>
 <div class="in">
-  <header class="sitenav"><a class="brand ch" href="../index.html">← Pockimusi</a><nav class="ch"><a href="https://github.com/nowitstime/pockimusi">GitHub</a><a href="../ricochet-press/index.html">Next ✦</a></nav></header>
+  <header class="sitenav"><a class="brand ch" href="../index.html">← Ideal Engine</a><nav class="ch"><a href="https://github.com/nowitstime/pockimusi">GitHub</a><a href="../ricochet-press/index.html">Next ✦</a></nav></header>
   <main>
     <section class="top">
       <div>
@@ -109,7 +114,7 @@ h1{font:500 clamp(40px,6vw,72px)/1 "Chakra Petch",sans-serif;letter-spacing:.16e
       <div class="stage"><svg id="ctl" viewBox="0 0 720 362" role="img" aria-labelledby="ctlTitle"><title id="ctlTitle">What each button does on the chosen instrument</title></svg></div>
       <div class="say2"><b id="ctlName">Chord harp</b><span id="ctlDesc"></span></div>
     </section>
-    <p class="hint">Pick an instrument above to see what the D-pad, face buttons and shoulders do on it.</p>
+    <p class="hint">Pick an instrument above to see what the D-pad, face buttons and shoulder buttons do on it.</p>
 
     <h2 class="sec">✦ Featured instruments</h2>
     <div class="consts">
@@ -130,7 +135,7 @@ h1{font:500 clamp(40px,6vw,72px)/1 "Chakra Petch",sans-serif;letter-spacing:.16e
       </div>
       <div class="const" style="--k:#3fe0c0">
         <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 64 L12 16 M12 40 L40 40 L68 16 M40 40 L68 64" stroke-opacity=".6"/><g fill="currentColor"><circle cx="12" cy="16" r="3"/><circle cx="12" cy="64" r="3"/><circle cx="40" cy="40" r="4"/><circle cx="68" cy="16" r="3"/><circle cx="68" cy="64" r="3"/></g></svg>
-        <h4>Strum</h4><p>Pick the chord tones with your thumbs, then pluck up or down with the shoulders.</p>
+        <h4>Strum</h4><p>Pick the chord tones with your thumbs, then pluck up or down with the shoulder buttons.</p>
         <div class="scr"><img src="../assets/img/pocki-strum-play.webp" alt="Strum: chord tone triggers with upstroke and downstroke on the shoulders"></div>
       </div>
     </div>
@@ -141,7 +146,7 @@ h1{font:500 clamp(40px,6vw,72px)/1 "Chakra Petch",sans-serif;letter-spacing:.16e
         <p>Any instrument can go in any of the four track slots. Swap one in and the same buttons do something new.</p>
       </div>
       <div class="lib">
-        <figure style="--k:#c58cff"><img src="../assets/img/pocki-dial-play.webp" alt="Dial instrument"><figcaption><b>Dial</b><span>Roll your thumb round the scale.</span></figcaption></figure>
+        <figure style="--k:#c58cff"><img src="../assets/img/pocki-dial-play.webp" alt="Dial instrument"><figcaption><b>Dial</b><span>Roll your thumb around the scale.</span></figcaption></figure>
         <figure style="--k:#7aa8ff"><img src="../assets/img/pocki-slide-play.webp" alt="Slide instrument"><figcaption><b>Slide</b><span>Steer the pitch instead of choosing it.</span></figcaption></figure>
         <figure style="--k:#f1d38a"><img src="../assets/img/pocki-valves-play.webp" alt="Valves instrument"><figcaption><b>Valves</b><span>Fingerings and breath, like brass.</span></figcaption></figure>
         <figure style="--k:#a487ff"><img src="../assets/img/pocki-roller.webp" alt="Roller instrument"><figcaption><b>Roller</b><span>Rolls and repeats at the speed you pick.</span></figcaption></figure>
@@ -173,7 +178,7 @@ h1{font:500 clamp(40px,6vw,72px)/1 "Chakra Petch",sans-serif;letter-spacing:.16e
         <h3 class="big">Hard to play a wrong note.</h3>
         <div class="rules">
           <div><i>✦</i><b>Notes follow the key</b><span>Pitched instruments play scale degrees and can follow the chord lane, so every note lands in key.</span></div>
-          <div><i>✦</i><b>Same grammar on every track</b><span>A button's job is the same on every instrument. Learn it once.</span></div>
+          <div><i>✦</i><b>Same grammar on every track</b><span>Left thumb shapes pitch or expression, right thumb triggers, shoulder buttons modify, R2 records. Learn the layout once.</span></div>
           <div><i>✦</i><b>Playable without looking</b><span>The screen confirms what you did. You never need it to do it.</span></div>
           <div><i>✦</i><b>The loop is always rolling</b><span>Recording is a gesture, not a menu. Press R2 and play.</span></div>
         </div>
@@ -203,9 +208,9 @@ const INSTRUMENTS = [
   { id: 'bass', name: 'Bass', c: '#a487ff', l1: 'OCT −1', r1: 'OCT +1', dpad: DEG, dcap: 'SCALE DEGREE',
     big: 'B', sub: 'DEG 7 · OCT +1 · HOLD', face: { n: 'ACCENT', w: 'STAC', e: 'LEGATO', s: 'HOLD' }, on: 's', desc: 'Each direction is a scale degree. The face buttons choose how the note is played.' },
   { id: 'strum', name: 'Strum', c: '#3fe0c0', l1: 'UPSTROKE', r1: 'DOWNSTROKE', dpad: DEG, dcap: 'SCALE DEGREE',
-    big: 'G', sub: 'DEG 5 · DOWNSTROKE', face: { n: '8VE', w: '7TH', e: '5TH', s: '3RD' }, on: 'e', desc: 'Pick the chord tones with your thumbs, then pluck up or down with the shoulders.' },
+    big: 'G', sub: 'DEG 5 · DOWNSTROKE', face: { n: '8VE', w: '7TH', e: '5TH', s: '3RD' }, on: 'e', desc: 'Pick the chord tones with your thumbs, then pluck up or down with the shoulder buttons.' },
   { id: 'dial', name: 'Dial', c: '#c58cff', l1: 'OCT −1', r1: 'OCT +1', dpad: ['ACCENT', 0, 'SHARP', 0, 'SOFT', 0, 'FLAT', 0], dcap: 'SCALE DEGREE',
-    big: 'E', sub: 'DEG 3 · OCT 0 · PLAIN', face: { n: '5', w: '7', e: '3', s: '1' }, on: 'e', desc: 'Roll your thumb round the scale, like turning a dial.' },
+    big: 'E', sub: 'DEG 3 · OCT 0 · PLAIN', face: { n: '5', w: '7', e: '3', s: '1' }, on: 'e', desc: 'Roll your thumb around the scale, like turning a dial.' },
   { id: 'slide', name: 'Slide', c: '#7aa8ff', l1: 'OCT − / FAST', r1: 'OCT + / FAST', dpad: ['RISE', 0, 'STEP +', 0, 'FALL', 0, 'STEP −', 0], dcap: 'SCALE DEGREE',
     big: 'E+', sub: 'DEG 3+ · SNAP SOFT', face: { n: 'ACCENT', w: 'DIVE', e: 'SETTLE', s: 'NOTE' }, on: 's', desc: 'Steer the pitch instead of choosing it. The D-pad sets how it rises and falls.' },
   { id: 'valves', name: 'Valves', c: '#f1d38a', l1: 'TONGUE', r1: 'BLOW', dpad: ['5TH', 0, '7TH', 0, 'OCT', 0, '3RD', 0], dcap: 'SCALE DEGREE',

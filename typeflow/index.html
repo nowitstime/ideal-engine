@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TypeFlow · Ideal Engine</title>
 <meta name="description" content="An OLED typing trainer and incremental flow-state RPG. Start with one word and grow to 1,000.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TypeFlow · OLED Typing Trainer & Flow RPG">
+<meta property="og:description" content="An OLED typing trainer and incremental flow-state RPG. Start with one word and grow to 1,000.">
+<meta property="og:image" content="https://nowitstime.github.io/ideal-engine/assets/img/typeflow-flow.webp">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,19 +70,19 @@ h2{font:700 12px "JetBrains Mono",monospace;color:var(--cy);text-transform:upper
 <body>
 <div class="aura" aria-hidden="true"></div>
 <div class="in">
-  <header class="sitenav"><a class="brand" href="../index.html">← type<b>flow</b></a><nav><a href="https://github.com/nowitstime/typeflow">github</a><a href="../darkcull/index.html">next →</a></nav></header>
+  <header class="sitenav"><a class="brand" href="../index.html">← ideal-<b>engine</b></a><nav><a href="https://github.com/nowitstime/typeflow">github</a><a href="../darkcull/index.html">next →</a></nav></header>
   <main>
     <section class="typer">
       <h1>TypeFlow</h1>
       <div class="flowchip"><span id="tfX">1.0× flow</span><i><b></b></i></div>
-      <div class="line" id="tfLine" aria-label="feel the white land move under your hands as the words begin to flow"></div>
-      <div class="wpm"><div><b id="tfW">0</b><span>wpm</span></div><div><b>1,000</b><span>words</span></div><div><b>180</b><span>tests pass</span></div><div><b>0</b><span>dependencies</span></div></div>
+      <div class="line" id="tfLine" aria-label="feel the keys settle under your hands as the words begin to flow"></div>
+      <div class="wpm"><div><b id="tfW">0</b><span>wpm</span></div><div><b>1,000</b><span>words</span></div><div><b>5</b><span>finger groups</span></div><div><b>0</b><span>dependencies</span></div></div>
       <a class="tbtn" href="https://nowitstime.github.io/typeflow/">start typing ↵</a>
     </section>
 
     <h2>// two ways to play</h2>
     <div class="shots2">
-      <figure class="glow"><img src="../assets/img/typeflow-flow.webp" alt="Flow mode glowing cyan at 3.6x flow"><figcaption><b>flow ×3.6</b> · 220 words unlocked. The screen glows as momentum builds.</figcaption></figure>
+      <figure class="glow"><img src="../assets/img/typeflow-flow.webp" alt="Flow mode glowing cyan at 3.0x flow"><figcaption><b>flow ×3.0</b> · 220 words unlocked. The screen glows as momentum builds.</figcaption></figure>
       <figure><img src="../assets/img/typeflow-classic.webp" alt="Classic mode timed test"><figcaption><b>classic</b> · 15, 30 or 60 seconds. Every record keeps its timeline.</figcaption></figure>
     </div>
 
@@ -85,7 +90,7 @@ h2{font:700 12px "JetBrains Mono",monospace;color:var(--cy);text-transform:upper
     <div class="kb">
       <div class="keys" aria-hidden="true" id="tfKeys"></div>
       <div class="buckets">
-        <div><i style="background:#38bdf8"></i><span>Home core &amp; centre flow</span><code>the · and</code></div>
+        <div><i style="background:#38bdf8"></i><span>Home core &amp; center flow</span><code>the · and</code></div>
         <div><i style="background:#2dd4bf"></i><span>Hand alternator</span><code>when · form</code></div>
         <div><i style="background:#c084fc"></i><span>Suffix &amp; inward curl</span><code>going · ions</code></div>
         <div><i style="background:#fbbf24"></i><span>Lateral &amp; pinky reach</span><code>quiz · pay</code></div>
@@ -114,7 +119,7 @@ h2{font:700 12px "JetBrains Mono",monospace;color:var(--cy);text-transform:upper
     .map((r) => '<div class="r">' + [...r].map((k) => heat[k] ? `<span data-b style="background:${heat[k]}">${k}</span>` : `<span>${k}</span>`).join('') + '</div>').join('');
 
   // Self-typing hero; the glow follows typing speed, with one typo on the way
-  const target = 'feel the white land move under your hands as the words begin to flow';
+  const target = 'feel the keys settle under your hands as the words begin to flow';
   const root = document.documentElement, line = document.getElementById('tfLine'), w = document.getElementById('tfW'), x = document.getElementById('tfX');
   const render = (typed, bad) => {
     let h = '';

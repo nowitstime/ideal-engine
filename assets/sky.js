@@ -34,15 +34,18 @@
     ctx.globalAlpha = 1;
   }
 
-  function all() { document.querySelectorAll('canvas.sky').forEach(build); }
-  addEventListener('resize', all);
-  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', all); else all();
-
-  if (!still) {
+  let running = false;
+  function start() {
+    if (running || still || ![...skies.keys()].some((c) => c.dataset.twinkle)) return;
+    running = true;
     const tick = (t) => {
       for (const [c] of skies) if (c.dataset.twinkle) paint(c, t / 16);
       requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
   }
+
+  function all() { document.querySelectorAll('canvas.sky').forEach(build); start(); }
+  addEventListener('resize', all);
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', all); else all();
 })();
