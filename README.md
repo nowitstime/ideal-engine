@@ -4,11 +4,11 @@ A small showcase site for my recent projects, hosted on GitHub Pages. Each proje
 
 | Page | Project | Repo |
 | :-- | :-- | :-- |
-| `octo/` | OCTO, a touch-first loop maker for the phone | `ideal-octo-tribble` |
 | `pockimusi/` | Pockimusi, a groovebox for the RG35XX Plus | `pockimusi` |
-| `ricochet-press/` | Ricochet Press, a brick breaker roguelike | `silver-barnacle` |
 | `typeflow/` | TypeFlow, a typing trainer and flow RPG | `typeflow` |
+| `ricochet-press/` | Ricochet Press, a brick breaker roguelike | `silver-barnacle` |
 | `darkcull/` | DarkCull, swipe-to-rate photo culling for darktable | `DarkCull` |
+| `octo/` | OCTO, a touch-first loop maker for the phone | `ideal-octo-tribble` |
 
 ## How it's built
 
